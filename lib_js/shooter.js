@@ -1,7 +1,5 @@
-window.Shooter = window.Shooter || {};
-
 window.onload = function(){
-  Shooter.init();
+  var shooter = new Shooter(document.getElementById('mon_canvas'));
 
   var animFrame = window.requestAnimationFrame;
 
@@ -15,89 +13,95 @@ window.onload = function(){
     time = new Date().getTime();
     delta = time - last_time;
 
-    Shooter.update(delta);
+    shooter.update(delta);
     last_time = time;
 
     last_draw += delta;
 
     if(last_draw > 10){
-      Shooter.canvas.width  = window.innerWidth - 10;
-      Shooter.canvas.height = window.innerHeight - 10;
+      shooter.canvas.width  = window.innerWidth - 10;
+      shooter.canvas.height = window.innerHeight - 10;
       last_draw = 0;
-      Shooter.draw();
+      shooter.draw();
     }
 
     animFrame( mainloop );
   };
 
   mainloop();
+
+  window.onresize = function(){
+    shooter.resize();
+  }
 };
 
-window.onresize = function(){
-  Shooter.resize();
-}
-
-Shooter.init = function(){
-  Shooter.canvas = document.getElementById('mon_canvas');
-  Shooter.context = Shooter.canvas.getContext('2d');
-  Shooter.ship = new Ship(100, 100, Shooter.context);
-  Shooter.ships = [];
-
-  Shooter.rand_width = function(){
-    return Math.floor(Math.random()*Shooter.canvas.width);
-  };
-
-  Shooter.rand_height = function(){
-    return Math.floor(Math.random()*Shooter.canvas.height);
-  };
-
-  Shooter.update = function(delta){
-    Shooter.ship.update(delta);
-    Shooter.ships.forEach(function(entry) {
-      entry.update_direction(delta);
-    });
-  };
-
-  Shooter.draw = function(){
-    Shooter.ship.draw();
-    Shooter.ships.forEach(function(entry) {
-      entry.draw();
-    });
-  };
-
-  Shooter.resize = function(){
-    Shooter.canvas.width  = window.innerWidth - 10;
-    Shooter.canvas.height = window.innerHeight - 10;
-    if(Shooter.canvas.width < 200)
-      Shooter.canvas.width = 200
-    if(Shooter.canvas.height < 200)
-      Shooter.canvas.height = 200
-  };
-
-  Shooter.doKeyDown = function(e){
-    console.log(e.keyCode);
-    //Vim mapping :)
-    if(e.keyCode == 72){ // H
-      Shooter.ship.turn_left();
-    }else if(e.keyCode == 76){ // L
-      Shooter.ship.turn_right();
-    }else if(e.keyCode == 74){ // j
-      Shooter.ship.go_back();
-    }else if(e.keyCode == 75){ // k
-      Shooter.ship.go_forward();
-    }else if(e.keyCode == 32){ // k
-      Shooter.ship.go_forward();
-    }
-  };
+function Shooter(canvas){
+  this.canvas = canvas;
+  this.context = canvas.getContext('2d');
+  this.ship = new Ship(100, 100, this.context);
+  this.ships = [];
 
   document.addEventListener(
-    "keydown", Shooter.doKeyDown
+    "keydown", this.doKeyDown
   );
 
-  Shooter.resize();
+  this.resize();
 
   for(var i = 0; i < 20; i++){
-    Shooter.ships.push(new Ship(Shooter.rand_width(), Shooter.rand_height(), Shooter.context));
+    this.ships.push(
+      new Ship(
+        this.rand_width(),
+        this.rand_height(),
+        this.context
+    )
+    );
   }
+}
 
+Shooter.prototype.rand_width = function(){
+  return Math.floor(Math.random()*this.canvas.width);
 };
+
+Shooter.prototype.rand_height = function(){
+  return Math.floor(Math.random()*this.canvas.height);
+};
+
+Shooter.prototype.update = function(delta){
+  this.ship.update(delta);
+  this.ships.forEach(function(entry) {
+    entry.update_direction(delta);
+  });
+};
+
+Shooter.prototype.draw = function(){
+  this.ship.draw();
+  this.ships.forEach(function(entry) {
+    entry.draw();
+  });
+};
+
+Shooter.prototype.resize = function(){
+  this.canvas.width  = window.innerWidth - 10;
+  this.canvas.height = window.innerHeight - 10;
+  if(this.canvas.width < 200)
+    this.canvas.width = 200
+  if(this.canvas.height < 200)
+    this.canvas.height = 200
+};
+
+Shooter.prototype.doKeyDown = function(e){
+  console.log(e.keyCode);
+  //Vim mapping :)
+  if(e.keyCode == 72){ // H
+    this.ship.turn_left();
+  }else if(e.keyCode == 76){ // L
+    this.ship.turn_right();
+  }else if(e.keyCode == 74){ // j
+    this.ship.go_back();
+  }else if(e.keyCode == 75){ // k
+    this.ship.go_forward();
+  }else if(e.keyCode == 32){ // k
+    this.ship.go_forward();
+  }
+};
+
