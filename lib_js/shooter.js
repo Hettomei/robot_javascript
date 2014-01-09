@@ -1,49 +1,8 @@
-window.onload = function(){
-  var shooter = new Shooter(document.getElementById('mon_canvas'));
-
-  var animFrame = window.requestAnimationFrame;
-
-  var last_time = new Date().getTime();
-  var time = new Date().getTime();
-
-  var delta = 0;
-  var last_draw = 0;
-
-  var mainloop = function() {
-    time = new Date().getTime();
-    delta = time - last_time;
-
-    shooter.update(delta);
-    last_time = time;
-
-    last_draw += delta;
-
-    if(last_draw > 10){
-      shooter.canvas.width  = window.innerWidth - 10;
-      shooter.canvas.height = window.innerHeight - 10;
-      last_draw = 0;
-      shooter.draw();
-    }
-
-    animFrame( mainloop );
-  };
-
-  mainloop();
-
-  window.onresize = function(){
-    shooter.resize();
-  }
-};
-
 function Shooter(canvas){
   this.canvas = canvas;
   this.context = canvas.getContext('2d');
   this.ship = new Ship(100, 100, this.context);
   this.ships = [];
-
-  document.addEventListener(
-    "keydown", this.doKeyDown
-  );
 
   this.resize();
 
@@ -73,7 +32,13 @@ Shooter.prototype.update = function(delta){
   });
 };
 
+Shooter.prototype.clean_background = function(){
+  this.canvas.width  = window.innerWidth - 10;
+  this.canvas.height = window.innerHeight - 10;
+}
+
 Shooter.prototype.draw = function(){
+  this.clean_background();
   this.ship.draw();
   this.ships.forEach(function(entry) {
     entry.draw();
@@ -91,6 +56,8 @@ Shooter.prototype.resize = function(){
 
 Shooter.prototype.doKeyDown = function(e){
   console.log(e.keyCode);
+  console.log(this);
+  window.aaa = this;
   //Vim mapping :)
   if(e.keyCode == 72){ // H
     this.ship.turn_left();
@@ -104,4 +71,3 @@ Shooter.prototype.doKeyDown = function(e){
     this.ship.go_forward();
   }
 };
-
