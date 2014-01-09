@@ -1,8 +1,23 @@
 window.onload = function(){
   var shooter = new Shooter(document.getElementById('mon_canvas'));
 
+  var doKeyDown = function(e){
+    console.log(e.keyCode);
+
+    //Vim mapping :)
+    if(e.keyCode == 72){ // H
+      shooter.ship.turn_left();
+    }else if(e.keyCode == 76){ // L
+      shooter.ship.turn_right();
+    }else if(e.keyCode == 74){ // j
+      shooter.ship.go_back();
+    }else if(e.keyCode == 75){ // k
+      shooter.ship.go_forward();
+    }
+  };
+
   document.addEventListener(
-    "keydown", shooter.doKeyDown
+    "keydown", doKeyDown
   );
 
   var last_time = new Date().getTime();
