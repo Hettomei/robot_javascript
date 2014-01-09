@@ -1,5 +1,6 @@
 window.onload = function(){
   var shooter = new Shooter(document.getElementById('mon_canvas'));
+  shooter.init();
 
   var doKeyDown = function(e){
     console.log(e.keyCode);
@@ -46,8 +47,5 @@ window.onload = function(){
 
   mainloop();
 
-  window.onresize = function(){
-    shooter.resize();
-  }
 };
 

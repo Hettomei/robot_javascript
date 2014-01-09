@@ -3,18 +3,6 @@ function Shooter(canvas){
   this.context = canvas.getContext('2d');
   this.ship = new Ship(100, 100, this.context);
   this.ships = [];
-
-  this.resize();
-
-  for(var i = 0; i < 20; i++){
-    this.ships.push(
-      new Ship(
-        this.rand_width(),
-        this.rand_height(),
-        this.context
-    )
-    );
-  }
 }
 
 Shooter.prototype.rand_width = function(){
@@ -32,9 +20,31 @@ Shooter.prototype.update = function(delta){
   });
 };
 
+//It s not only to clean_background, it s to resize too
 Shooter.prototype.clean_background = function(){
   this.canvas.width  = window.innerWidth - 10;
   this.canvas.height = window.innerHeight - 10;
+
+  if(this.canvas.width < 200)
+    this.canvas.width = 200
+
+  if(this.canvas.height < 200)
+    this.canvas.height = 200
+};
+
+Shooter.prototype.init = function(){
+  this.clean_background();
+  this.add_ships(2);
+};
+
+Shooter.prototype.add_ships = function(number){
+  for(var i = 0; i < number; i++){
+    this.ships.push( new Ship(
+      this.rand_width(),
+      this.rand_height(),
+      this.context
+    ));
+  }
 }
 
 Shooter.prototype.draw = function(){
@@ -43,13 +53,4 @@ Shooter.prototype.draw = function(){
   this.ships.forEach(function(entry) {
     entry.draw();
   });
-};
-
-Shooter.prototype.resize = function(){
-  this.canvas.width  = window.innerWidth - 10;
-  this.canvas.height = window.innerHeight - 10;
-  if(this.canvas.width < 200)
-    this.canvas.width = 200
-  if(this.canvas.height < 200)
-    this.canvas.height = 200
 };
