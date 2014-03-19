@@ -34,7 +34,7 @@ Shooter.prototype.clean_background = function(){
 
 Shooter.prototype.init = function(){
   this.clean_background();
-  this.add_ships(2);
+  this.add_ships(20);
 };
 
 Shooter.prototype.add_ships = function(number){
