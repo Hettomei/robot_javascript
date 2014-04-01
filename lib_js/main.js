@@ -6,13 +6,13 @@ window.onload = function(){
     console.log(e.keyCode);
 
     //Vim mapping :)
-    if(e.keyCode == 72){ // H
+    if(e.keyCode == 72 || e.keyCode == 37){ // H ou <-
       shooter.ship.turn_left();
-    }else if(e.keyCode == 76){ // L
+    }else if(e.keyCode == 76 || e.keyCode == 39){ // L ou ->
       shooter.ship.turn_right();
-    }else if(e.keyCode == 74){ // j
+    }else if(e.keyCode == 74 || e.keyCode == 40){ // j ou \/
       shooter.ship.go_back();
-    }else if(e.keyCode == 75){ // k
+    }else if(e.keyCode == 75 || e.keyCode == 38){ // k ou /\
       shooter.ship.go_forward();
     }
   };
