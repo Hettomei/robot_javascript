@@ -15,6 +15,8 @@ function Ship(x, y, context){
 
   this.last_changing_direction = 0;
   this.next_changing_direction = 0;
+
+  this.fires = [];
 };
 
 Ship.prototype.sin_angle = function(){
@@ -31,6 +33,10 @@ Ship.prototype.update = function(delta){
   var compute = this.move * this.move_step * delta;
   this.x += compute * this.cos_angle();
   this.y += compute * this.sin_angle();
+
+  this.fires.forEach(function(entry) {
+    entry.update(delta);
+  });
 };
 
 Ship.prototype.turn_right = function(){
@@ -57,6 +63,15 @@ Ship.prototype.stop = function(){
   this.move = 0;
 };
 
+Ship.prototype.fire = function(){
+  this.fires.push(new Fire(
+        this.x,
+        this.y,
+        this.current_angle,
+        this.context
+        ));
+};
+
 Ship.prototype.draw = function (){
   this.context.beginPath();
   this.context.arc(this.x, this.y, this.rayon, 0, Math.PI*2);
@@ -77,6 +92,10 @@ Ship.prototype.draw = function (){
       );
 
   this.context.stroke();
+
+  this.fires.forEach(function(entry) {
+    entry.draw();
+  });
 };
 
 Ship.prototype.update_direction = function(delta){
