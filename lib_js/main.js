@@ -3,7 +3,7 @@ window.onload = function(){
   shooter.init();
 
   var doKeyDown = function(e){
-    console.log(e.keyCode);
+    console.log("down " + e.keyCode);
 
     //Vim mapping :)
     if(e.keyCode == 72 || e.keyCode == 37){ // H ou <-
@@ -15,11 +15,38 @@ window.onload = function(){
     }else if(e.keyCode == 75 || e.keyCode == 38){ // k ou /\
       shooter.ship.go_forward();
     }
+
+    if(e.keyCode == 32){ // space
+      shooter.ship.fire();
+    }
   };
 
+  var doKeyUp = function(e){
+    console.log("up " + e.keyCode);
+    if(
+        e.keyCode == 72 ||
+        e.keyCode == 76 ||
+        e.keyCode == 37 ||
+        e.keyCode == 39
+      ){
+        shooter.ship.turn_stop();
+      }
+    if(
+        e.keyCode == 74 ||
+        e.keyCode == 40 ||
+        e.keyCode == 75 ||
+        e.keyCode == 38
+      ){
+        shooter.ship.stop();
+      }
+  }
+
   document.addEventListener(
-    "keydown", doKeyDown
-  );
+      "keydown", doKeyDown
+      );
+  document.addEventListener(
+      "keyup", doKeyUp
+      );
 
   var last_time = new Date().getTime();
   var time = new Date().getTime();

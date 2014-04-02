@@ -41,12 +41,20 @@ Ship.prototype.turn_left = function(){
   this.turn = -1;
 };
 
+Ship.prototype.turn_stop = function(){
+  this.turn = 0;
+};
+
 Ship.prototype.go_back = function(){
   this.move = -1;
 };
 
 Ship.prototype.go_forward = function(){
   this.move = 1;
+};
+
+Ship.prototype.stop = function(){
+  this.move = 0;
 };
 
 Ship.prototype.draw = function (){
@@ -59,14 +67,14 @@ Ship.prototype.draw = function (){
 
   //this.context.beginPath();
   this.context.moveTo(
-    this.x,
-    this.y
-  );
+      this.x,
+      this.y
+      );
 
   this.context.lineTo(
-    this.x + this.rayon * this.cos_angle(),
-    this.y + this.rayon * this.sin_angle()
-  );
+      this.x + this.rayon * this.cos_angle(),
+      this.y + this.rayon * this.sin_angle()
+      );
 
   this.context.stroke();
 };
